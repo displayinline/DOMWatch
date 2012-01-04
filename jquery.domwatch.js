@@ -1,10 +1,10 @@
 /**
  * 
- * '||''|.    ..|''||   '||    ||' '|| '||'  '|'           .           '||      
- *  ||   ||  .|'    ||   |||  |||   '|. '|.  .'   ....   .||.    ....   || ..   
- *  ||    || ||      ||  |'|..'||    ||  ||  |   '' .||   ||   .|   ''  ||' ||  
- *  ||    || '|.     ||  | '|' ||     ||| |||    .|' ||   ||   ||       ||  ||  
- * .||...|'   ''|...|'  .|. | .||.     |   |     '|..'|'  '|.'  '|...' .||. ||. 
+ * '||''|.	..|''||   '||	||' '|| '||'  '|'		   .		   '||	  
+ *  ||   ||  .|'	||   |||  |||   '|. '|.  .'   ....   .||.	....   || ..   
+ *  ||	|| ||	  ||  |'|..'||	||  ||  |   '' .||   ||   .|   ''  ||' ||  
+ *  ||	|| '|.	 ||  | '|' ||	 ||| |||	.|' ||   ||   ||	   ||  ||  
+ * .||...|'   ''|...|'  .|. | .||.	 |   |	 '|..'|'  '|.'  '|...' .||. ||. 
  * ----------------------------- By Display:inline ----------------------------
  * 
  * Track DOM changes made by jQuery, and call setup/clear methods on target elements
@@ -32,7 +32,7 @@
 	 */
 	
 	/********************************************************/
-	/*                 Variables declaration                */
+	/*				 Variables declaration				*/
 	/********************************************************/
 	
 		// Objects cache
@@ -109,7 +109,7 @@
 	};
 	
 	/********************************************************/
-	/*                DOM watching functions                */
+	/*				DOM watching functions				*/
 	/********************************************************/
 	
 	/*
@@ -117,7 +117,7 @@
 	 * On heavy applications, this may lead to some performance loss, so this feature can be disabled on demand.
 	 */
 	$.each([
-	    
+		
 		/*
 		 * Each function can have a clear and a setup function
 		 * Both can take several options:
@@ -126,7 +126,7 @@
 		 * - self: whether the clear/setup functions should apply to the modified elements
 		 * - subs: whether the clear/setup functions should apply to the modified elements children
 		 */
-	    {
+		{
 			name:	'wrapAll',
 			clear:	false,
 			setup:	{ prepare: false,
@@ -246,7 +246,7 @@
 	});
 	
 	/********************************************************/
-	/*                  Setup/clear methods                 */
+	/*				  Setup/clear methods				 */
 	/********************************************************/
 	
 	/**
