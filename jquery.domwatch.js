@@ -235,7 +235,7 @@
 			result = original.apply(this, Array.prototype.slice.call(arguments));
 			watching = true;
 			
-			// Call template setup
+			// Call setup functions
 			if (autoWatch && watching && func.setup)
 			{
 				func.setup.target.call(this, prepared).applySetup(func.setup.self, func.setup.sub);
@@ -251,8 +251,6 @@
 	
 	/**
 	 * Add a clear function on an element, with same format as $.domwatch.addClearFunction()
-	 * This function is primarily intended for removing template replacement elements,
-	 * but may be used for any other purpose
 	 * 
 	 * @param function func the function to be added
 	 * @param boolean priority set to true to call the function before all others (optional)
@@ -338,7 +336,7 @@
 	};
 	
 	/**
-	 * Call every template setup function over a jQuery object (for instance : $('body').applySetup())
+	 * Call every setup function over a jQuery object (for instance : $('body').applySetup())
 	 * 
 	 * @param boolean self whether the current element should be affected or not (default: true)
 	 * @param boolean children whether the element's children should be affected or not (default: true)
