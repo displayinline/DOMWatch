@@ -388,7 +388,7 @@
 	};
 
 	// Main template clear function
-	$.template.addClearFunction(function(self, children)
+	$.domwatch.addClearFunction(function(self, children)
 	{
 		// Elements with clear functions
 		this.findIn(self, children, '.withClearFunctions').each(function(i)
