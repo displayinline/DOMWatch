@@ -1,20 +1,20 @@
-/**
- * 
- * '||''|.    ..|''||   '||    ||' '|| '||'  '|'           .           '||      
- *  ||   ||  .|'    ||   |||  |||   '|. '|.  .'   ....   .||.    ....   || ..   
- *  ||    || ||      ||  |'|..'||    ||  ||  |   '' .||   ||   .|   ''  ||' ||  
- *  ||    || '|.     ||  | '|' ||     ||| |||    .|' ||   ||   ||       ||  ||  
- * .||...|'   ''|...|'  .|. | .||.     |   |     '|..'|'  '|.'  '|...' .||. ||. 
+﻿/**
+ *
+ * '||''|.    ..|''||   '||    ||' '|| '||'  '|'           .           '||
+ *  ||   ||  .|'    ||   |||  |||   '|. '|.  .'   ....   .||.    ....   || ..
+ *  ||    || ||      ||  |'|..'||    ||  ||  |   '' .||   ||   .|   ''  ||' ||
+ *  ||    || '|.     ||  | '|' ||     ||| |||    .|' ||   ||   ||       ||  ||
+ * .||...|'   ''|...|'  .|. | .||.     |   |     '|..'|'  '|.'  '|...' .||. ||.
  * ----------------------------- By Display:inline ----------------------------
- * 
+ *
  * Track DOM changes made by jQuery, and call setup/clear methods on target elements
- * 
+ *
  * Structural good practices from the article from Addy Osmani 'Essential jQuery plugin patterns'
  * @url http://coding.smashingmagazine.com/2011/10/11/essential-jquery-plugin-patterns/
  */
 
 /*
- * The semi-colon before the function invocation is a safety 
+ * The semi-colon before the function invocation is a safety
  * net against concatenated scripts and/or other plugins
  * that are not closed properly.
  */
@@ -25,35 +25,35 @@
 	 * be changed by someone else). undefined isn't really being passed in so we can ensure that its value is
 	 * truly undefined. In ES5, undefined can no longer be modified.
 	 */
-	
+
 	/*
 	 * window and document are passed through as local variables rather than as globals, because this (slightly)
 	 * quickens the resolution process and can be more efficiently minified.
 	 */
-	
+
 	/********************************************************/
 	/*                 Variables declaration                */
 	/********************************************************/
-	
+
 		// Objects cache
 	var win = $(window),
 		doc = $(document),
-		
+
 		// Whether auto-watching DOM changes or not
 		autoWatch = true,
-		
+
 		// Recursion prevention in setup/clear watcher functions (prevent unnecessary processing)
 		watching = true,
-		
+
 		// List of setup functions
 		setupFunctions = [],
-		
+
 		// List of clear functions
 		clearFunctions = [];
-	
+
 	// Public methods will be created in here
 	$.domwatch = {
-		
+
 		/**
 		 * Enable DOM watching
 		 * @return void
@@ -62,10 +62,10 @@
 		{
 			autoWatch = true;
 		},
-		
+
 		/**
 		 * Disable DOM watching
-		 * @return boolean whether DOM watching was activated before
+		 * @return boolean whether DOM watching was active before
 		 */
 		disableDOMWatch: function()
 		{
@@ -73,14 +73,14 @@
 			autoWatch = false;
 			return previous;
 		},
-		
+
 		/**
 		 * Add a new global clear function. The function should accept 2 arguments:
 		 * - self (whether the target element should be affected or not)
 		 * - children (whether the element's children should be affected or not)
 		 * The function should also return the jQuery selection, incremented from any added element in the root set
 		 * (Note: the function may use the custom method findIn() with the same arguments)
-		 * 
+		 *
 		 * @param function func the function to be called on a jQuery object
 		 * @param boolean priority set to true to call the function before all others (optional)
 		 * @return void
@@ -89,14 +89,14 @@
 		{
 			clearFunctions[priority ? 'unshift' : 'push'](func);
 		},
-		
+
 		/**
 		 * Add a new global setup function. The function should accept 2 arguments:
 		 * - self (whether the current element should be affected or not)
 		 * - children (whether the element's children should be affected or not)
 		 * The function should also return the jQuery selection, incremented from any added element in the root set
 		 * (Note: the function may use the custom method findIn() with the same arguments)
-		 * 
+		 *
 		 * @param function func the function to be called on a jQuery object
 		 * @param boolean priority set to true to call the function before all others (optional)
 		 * @return void
@@ -105,19 +105,19 @@
 		{
 			setupFunctions[priority ? 'unshift' : 'push'](func);
 		}
-		
+
 	};
-	
+
 	/********************************************************/
 	/*                DOM watching functions                */
 	/********************************************************/
-	
+
 	/*
 	 * The plugin intercepts main jQuery DOM methods to add a callback to the setup/clear functions.
 	 * On heavy applications, this may lead to some performance loss, so this feature can be disabled on demand.
 	 */
 	$.each([
-		
+
 		/*
 		 * Each function can have a clear and a setup function
 		 * Both can take several options:
@@ -201,20 +201,20 @@
 					  target: function() { return this; },
 					  self: true,  subs: false }
 		}
-		
+
 	], function()
 	{
 		// Store original
 		var func = this,
 			original = $.fn[func.name];
-		
+
 		// New wrapper function
 		$.fn[func.name] = function()
 		{
 			var target,
 				prepared = false,
 				result;
-			
+
 			if (autoWatch && watching)
 			{
 				// Clear dynamic elements
@@ -222,36 +222,36 @@
 				{
 					func.clear.target.call(this).applyClear(func.clear.self, func.clear.sub);
 				}
-				
+
 				// Preparation for setup
 				if (func.setup && func.setup.prepare)
 				{
 					prepared = func.setup.prepare.call(this);
 				}
 			}
-			
+
 			// Call original
 			watching = false;
 			result = original.apply(this, Array.prototype.slice.call(arguments));
 			watching = true;
-			
+
 			// Call setup functions
 			if (autoWatch && watching && func.setup)
 			{
 				func.setup.target.call(this, prepared).applySetup(func.setup.self, func.setup.sub);
 			}
-			
+
 			return result;
 		};
 	});
-	
+
 	/********************************************************/
 	/*                  Setup/clear methods                 */
 	/********************************************************/
-	
+
 	/**
 	 * Add a clear function on an element, with same format as $.domwatch.addClearFunction()
-	 * 
+	 *
 	 * @param function func the function to be added
 	 * @param boolean priority set to true to call the function before all others (optional)
 	 */
@@ -264,13 +264,13 @@
 			functions[priority ? 'unshift' : 'push'](func);
 			element.addClass('withClearFunctions').data('clearFunctions', functions);
 		});
-		
+
 		return this;
 	};
-	
+
 	/**
 	 * Remove a clear function from the element
-	 * 
+	 *
 	 * @param function func the function to be cleared
 	 */
 	$.fn.removeClearFunction = function(func)
@@ -280,7 +280,7 @@
 			var element = $(this),
 				functions = element.data('clearFunctions') || [],
 				i;
-			
+
 			// Clear
 			for (i = 0; i < functions.length; ++i)
 			{
@@ -290,7 +290,7 @@
 					--i;
 				}
 			}
-			
+
 			// If any function left
 			if (functions.length > 0)
 			{
@@ -301,13 +301,13 @@
 				element.removeClass('withClearFunctions').removeData('clearFunctions');
 			}
 		});
-		
+
 		return this;
 	};
-	
+
 	/**
 	 * Call every clear function over a jQuery object (for instance : $('body').applyClear())
-	 * 
+	 *
 	 * @param boolean self whether the current element should be affected or not (default: true)
 	 * @param boolean children whether the element's children should be affected or not (default: true)
 	 * @return void
@@ -316,28 +316,28 @@
 	{
 		var element = this,
 			isWatching = $.domwatch.disableDOMWatch();
-		
+
 		// Defaults
 		if (self === undefined) self = true;
 		if (children === undefined) children = true;
-		
+
 		$.each(clearFunctions, function()
 		{
 			element = this.call(element, self, children);
 		});
-		
+
 		// Re-enable DOM watching if required
 		if (isWatching)
 		{
 			$.domwatch.enableDOMWatch();
 		}
-		
+
 		return this;
 	};
-	
+
 	/**
 	 * Call every setup function over a jQuery object (for instance : $('body').applySetup())
-	 * 
+	 *
 	 * @param boolean self whether the current element should be affected or not (default: true)
 	 * @param boolean children whether the element's children should be affected or not (default: true)
 	 * @return void
@@ -346,25 +346,25 @@
 	{
 		var element = this,
 			isWatching = $.domwatch.disableDOMWatch();
-		
+
 		// Defaults
 		if (self === undefined) self = true;
 		if (children === undefined) children = true;
-		
+
 		$.each(setupFunctions, function()
 		{
 			this.call(element, self, children);
 		});
-		
+
 		// Re-enable DOM watching if required
 		if (isWatching)
 		{
 			$.domwatch.enableDOMWatch();
 		}
-		
+
 		return this;
 	};
-	
+
 	/**
 	 * Custom find method to work with the clear/setup functions arguments self & children
 	 * @param boolean self whether the current element should be included in the search or not
@@ -375,7 +375,7 @@
 	$.fn.findIn = function(self, children, selector)
 	{
 		var element = $(this);
-		
+
 		// Mode
 		if (self && children)
 		{
@@ -386,11 +386,33 @@
 			return element[self ? 'filter' : 'find'](selector);
 		}
 	};
-	
+
+	// Main template clear function
+	$.template.addClearFunction(function(self, children)
+	{
+		// Elements with clear functions
+		this.findIn(self, children, '.withClearFunctions').each(function(i)
+		{
+			var target = this,
+				element = $(target),
+				functions = element.data( 'clearFunctions' ) || [];
+
+			$.each( functions, function( i )
+			{
+				this.apply( target );
+			} );
+
+			// Once called, functions are removed
+			element.removeClass( 'withClearFunctions' ).removeData( 'clearFunctions' );
+		});
+
+		return this;
+	});
+
 	// Initial setup
 	doc.ready(function()
 	{
 		$(document.body).applySetup();
 	});
-	
+
 })(this.jQuery, window, document);
